@@ -67,7 +67,8 @@ class Restaurant {
     }
 }
 
-document.getElementById("reservation-form")
+document
+        .getElementById("reservation-form")
         .addEventListener("submit", function (event) {
         event.preventDefault();
 
