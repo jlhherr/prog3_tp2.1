@@ -1,4 +1,44 @@
-class Sensor {}
+class Sensor {
+constructor(id, name, type, value, unit, updated_at) {
+    this.id = id;
+    this.name = name;
+    this._type = type;
+    this.value = value;
+    this.unit = unit;
+    this.updated_at = updated_at;
+}
+
+
+
+ 
+
+     
+ set updateValue(newValue){
+    if (this.isValidType(this._type)&& this.isValidType(newValue)){
+        this.value = newValue;
+        this.updated_at = new Date().toISOString();
+        } else {
+            console.error("invalido tipode sensor");
+            console.log(" tipo de sensor no valido");
+    };
+}
+
+    
+ set isValidType(value){
+    if(this._type==="temperature"){
+        return typeof value==="number";
+
+    } else if (this._type==="humidity"){
+        return typeof value==="number" && value <=100;
+    } else if (this._type==="pressure"){
+        return typeof value==="number" && value >=0;
+    }else{
+        return false;
+    }
+}
+
+}
+
 
 class SensorManager {
     constructor() {
@@ -33,7 +73,27 @@ class SensorManager {
         }
     }
 
-    async loadSensors(url) {}
+async loadSensors(filePath) {
+    try {
+        const response = await fetch(filePath);
+        if (!response.ok) {
+            throw new Error(`Failed to load sensors: ${response.status}`);
+        }
+        const data = await response.json();
+        this.sensors = data.map(sensorData => new Sensor (
+                sensorData.id,
+                sensorData.name,
+                sensorData.type,
+                sensorData.value,
+                sensorData.unit,
+                sensorData.updated_at
+            ));
+            this.render();
+    } catch (error) {
+        console.error("Error al cargar el sensors:", error);
+       
+    }
+}
 
     render() {
         const container = document.getElementById("sensor-container");
@@ -51,7 +111,7 @@ class SensorManager {
                     <div class="card-content">
                         <div class="content">
                             <p>
-                                <strong>Tipo:</strong> ${sensor.type}
+                                <strong>Tipo:</strong> ${sensor._type}
                             </p>
                             <p>
                                <strong>Valor:</strong> 
@@ -68,6 +128,7 @@ class SensorManager {
                         <a href="#" class="card-footer-item update-button" data-id="${
                             sensor.id
                         }">Actualizar</a>
+                        
                     </footer>
                 </div>
             `;
@@ -83,7 +144,10 @@ class SensorManager {
             });
         });
     }
+
 }
+
+
 
 const monitor = new SensorManager();
 
