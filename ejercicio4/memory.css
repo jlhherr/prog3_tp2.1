@@ -45,8 +45,8 @@ img {
 }
 
 #stats {
-    display: flex;
-    justify-content: space-around;
+    display:flex;
+    justify-content:space-around;
     margin-bottom: 20px;
     width: 100%;
     max-width: 600px;

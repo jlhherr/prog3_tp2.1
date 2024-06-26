@@ -11,16 +11,18 @@ class Customer {
     }
 
 class Reservation {
-    constructor(id, customer, date, time, guests) {
+    constructor(id, customer, date, guests) {
         this.id = id;
         this.customer = customer;
         this.date = new Date(date);
         this.guests = guests;
     }
 
-    get details() {
-        return ` ${this.id}, Cliente: ${this.customer.info}, Fecha: ${this.date}, Hora: ${this.time}, Número de invitados: ${this.guests}`;
+    get info() {
+        return `Reserva para ${this.customer.info} el ${this.date.toLocaleString()} para ${this.guests} comensales.`;
     }
+
+    
 
     static validateReservation(date, guests){
        
@@ -30,18 +32,23 @@ class Reservation {
         
     }
 }
+   
+
 
 
 class Restaurant {
     constructor(name) {
         this.name = name;
         this.reservations = [];
+    
     }
 
     addReservation(reservation) {
         this.reservations.push(reservation);
+       
     }
 
+  
     render() {
         const container = document.getElementById("reservations-list");
         container.innerHTML = "";
@@ -76,7 +83,7 @@ document
         const customerEmail = document.getElementById("customer-email").value;
         const reservationDate =
             document.getElementById("reservation-date").value;
-        const guests = parseInt(document.getElementById("guests").value);
+        const guests = parseInt(document.getElementById("guests").value); 
 
         if (Reservation.validateReservation(reservationDate, guests)) {
             const customerId = restaurant.reservations.length + 1;
