@@ -84,6 +84,7 @@ document
         const reservationDate =
             document.getElementById("reservation-date").value;
         const guests = parseInt(document.getElementById("guests").value); 
+     
 
         if (Reservation.validateReservation(reservationDate, guests)) {
             const customerId = restaurant.reservations.length + 1;
